@@ -5,22 +5,99 @@
   <title>FH Decoder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: sans-serif; background: #0f0f0f; color: #fff; text-align: center; padding: 40px 20px; }
-    input { width: 100%; max-width: 400px; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #1a1a1a; color: #fff; }
-    button { margin-top: 20px; padding: 12px 45px; font-weight: bold; border-radius: 25px; cursor: pointer; background: #e0e0e0; border: none; }
-    #output { margin-top: 30px; font-size: 22px; color: #4CAF50; min-height: 30px; }
-    .fade-in { animation: fadeIn 0.5s ease; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .watermark { position: fixed; bottom: 20px; right: 20px; opacity: 0.4; font-size: 13px; color: #888; pointer-events: none; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f0f0f;
+      color: #ffffff;
+      text-align: center;
+      padding: 40px 20px;
+      margin: 0;
+    }
+    input {
+      width: 100%;
+      max-width: 400px;
+      padding: 15px;
+      font-size: 16px;
+      border: 1px solid #333;
+      border-radius: 12px;
+      background: #1a1a1a;
+      color: white;
+      outline: none;
+    }
+    button.convert-btn {
+      margin-top: 20px;
+      padding: 12px 45px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #e0e0e0;
+      color: #000;
+      border: none;
+      border-radius: 25px;
+      transition: transform 0.2s;
+    }
+    button.convert-btn:active { transform: scale(0.95); }
+    
+    .result-container {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    #output {
+      font-size: 24px;
+      font-weight: bold;
+      color: #4CAF50;
+      word-break: break-all;
+    }
+    .copy-btn {
+      padding: 8px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      background: #333;
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 8px;
+      display: none; /* يظهر فقط عند وجود نتيجة */
+    }
+    .copy-btn:hover { background: #444; }
+
+    .fade-in { animation: fadeIn 0.6s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* العلامة المائية كرابط إنستغرام */
+    .watermark {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      opacity: 0.5;
+      font-size: 13px;
+      color: #888;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: opacity 0.3s;
+    }
+    .watermark:hover { opacity: 1; color: #E1306C; }
   </style>
 </head>
 <body>
+
   <h2>FH Decoder</h2>
+
   <input id="input" type="text" placeholder="Enter fh_code..." autocomplete="off">
   <br>
-  <button onclick="run()">Convert</button>
-  <div id="output"></div>
-  <div class="watermark">YOUCEF DJEBBAR</div>
+  <button class="convert-btn" onclick="run()">Convert</button>
+
+  <div class="result-container">
+    <div id="output"></div>
+    <button id="copyBtn" class="copy-btn" onclick="copyToClipboard()">Copy Password</button>
+  </div>
+
+  <a href="https://www.instagram.com/alt.yxf" target="_blank" class="watermark">
+    YOUCEF DJEBBAR | @alt.yxf
+  </a>
 
   <script>
     const map = {
@@ -31,22 +108,47 @@
       "x":"i","w":"j","v":"k","e":"1","d":"2","c":"3",
       "b":"4","a":"5","9":"6","8":"7","7":"8","6":"9"
     };
+
     function run() {
       const input = document.getElementById("input").value.trim();
       const output = document.getElementById("output");
+      const copyBtn = document.getElementById("copyBtn");
+
       if (!input.toLowerCase().startsWith("fh_")) {
         output.textContent = "Error: Start with fh_";
+        output.style.color = "#ff4444";
+        copyBtn.style.display = "none";
         return;
       }
+
       let result = "wlan";
       for (let ch of input.slice(3).toLowerCase()) {
         result += map[ch] ?? ch;
       }
+
       output.textContent = result;
+      output.style.color = "#4CAF50";
       output.classList.remove("fade-in");
       void output.offsetWidth;
       output.classList.add("fade-in");
+      
+      // إظهار زر النسخ
+      copyBtn.style.display = "inline-block";
+      copyBtn.textContent = "Copy Password";
+    }
+
+    function copyToClipboard() {
+      const text = document.getElementById("output").textContent;
+      const btn = document.getElementById("copyBtn");
+      
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = "Copied! ✅";
+        setTimeout(() => {
+          btn.textContent = "Copy Password";
+        }, 2000);
+      });
     }
   </script>
+
 </body>
 </html>
