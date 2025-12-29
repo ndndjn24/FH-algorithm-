@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FH Decoder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; background: #0f0f0f; color: #fff; text-align: center; padding: 40px 20px; }
+    input { width: 100%; max-width: 400px; padding: 15px; border-radius: 12px; border: 1px solid #333; background: #1a1a1a; color: #fff; }
+    button { margin-top: 20px; padding: 12px 45px; font-weight: bold; border-radius: 25px; cursor: pointer; background: #e0e0e0; border: none; }
+    #output { margin-top: 30px; font-size: 22px; color: #4CAF50; min-height: 30px; }
+    .fade-in { animation: fadeIn 0.5s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .watermark { position: fixed; bottom: 20px; right: 20px; opacity: 0.4; font-size: 13px; color: #888; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <h2>FH Decoder</h2>
+  <input id="input" type="text" placeholder="Enter fh_code..." autocomplete="off">
+  <br>
+  <button onclick="run()">Convert</button>
+  <div id="output"></div>
+  <div class="watermark">YOUCEF DJEBBAR</div>
+
+  <script>
+    const map = {
+      "5":"a","4":"b","3":"c","2":"d","1":"e","0":"f",
+      "g":"z","h":"y","i":"x","j":"w","k":"v","l":"u",
+      "m":"t","n":"s","o":"r","p":"q","q":"p","r":"o",
+      "s":"n","t":"m","u":"l","f":"o","z":"g","y":"h",
+      "x":"i","w":"j","v":"k","e":"1","d":"2","c":"3",
+      "b":"4","a":"5","9":"6","8":"7","7":"8","6":"9"
+    };
+    function run() {
+      const input = document.getElementById("input").value.trim();
+      const output = document.getElementById("output");
+      if (!input.toLowerCase().startsWith("fh_")) {
+        output.textContent = "Error: Start with fh_";
+        return;
+      }
+      let result = "wlan";
+      for (let ch of input.slice(3).toLowerCase()) {
+        result += map[ch] ?? ch;
+      }
+      output.textContent = result;
+      output.classList.remove("fade-in");
+      void output.offsetWidth;
+      output.classList.add("fade-in");
+    }
+  </script>
+</body>
+</html>
