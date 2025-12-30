@@ -78,7 +78,6 @@
       box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
     }
 
-    /* تنسيق موحد للأزرار */
     .action-btn {
       width: 100%;
       padding: 18px;
@@ -92,19 +91,17 @@
       text-transform: uppercase;
     }
 
-    /* زر التحويل - أبيض */
     .convert-btn {
       margin-top: 30px;
       background: white;
       color: black;
     }
 
-    /* زر النسخ - رمادي مطفي */
     .copy-btn {
       margin-top: 15px;
       background: #252525;
       color: #999;
-      display: none; /* يظهر فقط عند وجود نتيجة */
+      display: none;
     }
 
     .action-btn:active {
@@ -119,6 +116,7 @@
       color: #ffffff;
       min-height: 40px;
       letter-spacing: 1px;
+      word-break: break-all;
     }
 
     .watermark {
@@ -162,14 +160,23 @@
     };
 
     function run() {
-      const input = document.getElementById("input").value.trim();
+      let inputVal = document.getElementById("input").value.trim().toLowerCase();
       const output = document.getElementById("output");
       const copyBtn = document.getElementById("copyBtn");
 
-      if (input === "") return;
+      if (inputVal === "") return;
 
       let result = "";
-      for (let ch of input.toLowerCase()) {
+      let remainingText = inputVal;
+
+      // إذا بدأ النص بـ fh_ نقوم بتبديلها بـ wlan وتجاوزها في التحويل
+      if (inputVal.startsWith("fh_")) {
+        result = "wlan";
+        remainingText = inputVal.substring(3); // نأخذ ما بعد fh_
+      }
+
+      // تحويل بقية الحروف بناءً على الخريطة
+      for (let ch of remainingText) {
         result += map[ch] ?? ch;
       }
 
@@ -206,4 +213,3 @@
   </script>
 </body>
 </html>
-
