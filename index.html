@@ -2,126 +2,167 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>FH Decoder</title>
+  <title>FH Decoder Pro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* تصميم الخلفية العصرية */
+    :root {
+      --primary: #00ff88;
+      --glass: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.1);
+    }
+
     body {
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
-      color: #ffffff;
       margin: 0;
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #000;
+      color: white;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      overflow: hidden;
     }
 
-    /* الحاوية الزجاجية (Glassmorphism) */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 24px;
-      padding: 40px 20px;
+    /* تأثير السائل المتحرك في الخلفية */
+    .liquid-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #050505, #1a1a2e, #050505);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      z-index: -1;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* الحاوية الزجاجية المطورة */
+    .container {
+      background: var(--glass);
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
+      border: 1px solid var(--border);
+      padding: 40px;
+      border-radius: 35px;
       width: 90%;
-      max-width: 400px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+      max-width: 380px;
       text-align: center;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+      animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    h2 { margin-bottom: 30px; font-weight: 300; letter-spacing: 2px; }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-weight: 300;
+      letter-spacing: 2px;
+      margin-bottom: 30px;
+      background: linear-gradient(to right, #fff, #888);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
     input {
       width: 100%;
-      max-width: 320px;
-      padding: 15px;
+      padding: 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      color: white;
       font-size: 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
       outline: none;
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       box-sizing: border-box;
+      text-align: center;
     }
 
     input:focus {
-      border-color: #4CAF50;
-      background: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 0 15px rgba(76, 175, 80, 0.2);
+      background: rgba(255,255,255,0.07);
+      border-color: var(--primary);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
     }
 
-    button.convert-btn {
+    /* أنيميشن زر Convert */
+    .convert-btn {
       margin-top: 25px;
-      padding: 12px 50px;
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 30px;
+      width: 100%;
+      padding: 16px;
+      border-radius: 20px;
       border: none;
-      background: #ffffff;
-      color: #000;
+      background: white;
+      color: black;
+      font-weight: 700;
+      font-size: 16px;
       cursor: pointer;
-      transition: transform 0.2s, background 0.3s;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
     }
 
-    button.convert-btn:active { transform: scale(0.95); }
+    .convert-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255,255,255,0.2);
+    }
+
+    .convert-btn:active {
+      transform: scale(0.96);
+    }
 
     #output {
-      margin-top: 30px;
-      font-size: 24px;
-      font-weight: bold;
-      color: #4CAF50;
+      margin-top: 35px;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
       min-height: 35px;
-      word-break: break-all;
+      transition: all 0.4s ease;
     }
 
     .copy-btn {
       margin-top: 15px;
-      padding: 10px 25px;
-      font-size: 14px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: #aaa;
+      padding: 8px 20px;
+      border-radius: 12px;
       cursor: pointer;
       display: none;
-      transition: all 0.3s;
-    }
-
-    .copy-btn:hover { background: rgba(255, 255, 255, 0.2); }
-
-    .fade-in { animation: fadeIn 0.5s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* العلامة المائية */
-    .watermark {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      opacity: 0.5;
-      font-size: 12px;
-      color: #888;
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      font-size: 13px;
       transition: 0.3s;
     }
-    .watermark:hover { opacity: 1; color: #E1306C; }
+    
+    .copy-btn:hover { color: white; background: rgba(255,255,255,0.1); }
+
+    .watermark {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: 0.4s;
+    }
+    .watermark:hover { color: var(--primary); opacity: 1; }
   </style>
 </head>
 <body>
 
-  <div class="glass-card">
-    <h2>FH Decoder</h2>
-    <input id="input" type="text" placeholder="Enter fh_code..." autocomplete="off">
-    <br>
+  <div class="liquid-bg"></div>
+
+  <div class="container">
+    <h2>DECODER PRO</h2>
+    <input id="input" type="text" placeholder="Enter text..." autocomplete="off">
     <button class="convert-btn" onclick="run()">Convert</button>
 
     <div id="output"></div>
-    <button id="copyBtn" class="copy-btn" onclick="copyToClipboard()">Copy Password</button>
+    <button id="copyBtn" class="copy-btn" onclick="copyToClipboard()">Tap to copy</button>
   </div>
 
   <a href="https://www.instagram.com/alt.yxf" target="_blank" class="watermark">
@@ -133,9 +174,10 @@
       "5":"a","4":"b","3":"c","2":"d","1":"e","0":"f",
       "g":"z","h":"y","i":"x","j":"w","k":"v","l":"u",
       "m":"t","n":"s","o":"r","p":"q","q":"p","r":"o",
-      "s":"n","t":"m","u":"l","f":"0","z":"g","y":"h",
-      "x":"i","w":"j","v":"k","e":"1","d":"2","c":"3",
-      "b":"4","a":"5","9":"6","8":"7","7":"8","6":"9"
+      "s":"n","t":"m","u":"l","f":"0", // تصحيح حرف f إلى 0 بناءً على جدولك
+      "z":"g","y":"h","x":"i","w":"j","v":"k",
+      "e":"1","d":"2","c":"3","b":"4","a":"5",
+      "9":"6","8":"7","7":"8","6":"9"
     };
 
     function run() {
@@ -143,53 +185,38 @@
       const output = document.getElementById("output");
       const copyBtn = document.getElementById("copyBtn");
 
-      if (!input.toLowerCase().startsWith("fh_")) {
-        output.textContent = "Error: Start with fh_";
-        output.style.color = "#ff4444";
-        copyBtn.style.display = "none";
-        return;
-      }
+      if (input === "") return;
 
-      let result = "wlan";
-      for (let ch of input.slice(3).toLowerCase()) {
+      let result = "";
+      for (let ch of input.toLowerCase()) {
         result += map[ch] ?? ch;
       }
 
-      output.textContent = result;
-      output.style.color = "#4CAF50";
-      output.classList.remove("fade-in");
-      void output.offsetWidth;
-      output.classList.add("fade-in");
-      copyBtn.style.display = "inline-block";
-      copyBtn.textContent = "Copy Password";
+      output.style.opacity = "0";
+      setTimeout(() => {
+        output.textContent = result;
+        output.style.opacity = "1";
+        copyBtn.style.display = "inline-block";
+      }, 150);
     }
 
     function copyToClipboard() {
       const text = document.getElementById("output").textContent;
       const btn = document.getElementById("copyBtn");
       
-      if (navigator.vibrate) {
-        navigator.vibrate(50); 
-      }
+      if (navigator.vibrate) navigator.vibrate(40);
 
       navigator.clipboard.writeText(text).then(() => {
         btn.textContent = "Copied! ✅";
-        btn.style.background = "#4CAF50";
-        setTimeout(() => {
-          btn.textContent = "Copy Password";
-          btn.style.background = "rgba(255, 255, 255, 0.1)";
-        }, 2000);
+        setTimeout(() => { btn.textContent = "Tap to copy"; }, 2000);
       });
     }
 
-    // --- الجزء المضاف لتفعيل الـ Offline ---
+    // تفعيل الخدمة للعمل أوفلاين بالكامل
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        const swCode = `
-          self.addEventListener('install', e => e.waitUntil(caches.open('fh-v1').then(c => c.addAll(['./']))));
-          self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
-        `;
-        const blob = new Blob([swCode], {type: 'text/javascript'});
+        const sw = `self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));`;
+        const blob = new Blob([sw], {type: 'text/javascript'});
         navigator.serviceWorker.register(URL.createObjectURL(blob));
       });
     }
