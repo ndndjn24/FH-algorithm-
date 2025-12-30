@@ -168,7 +168,6 @@
       const text = document.getElementById("output").textContent;
       const btn = document.getElementById("copyBtn");
       
-      // ميزة الاهتزاز (Haptic Feedback)
       if (navigator.vibrate) {
         navigator.vibrate(50); 
       }
@@ -182,7 +181,18 @@
         }, 2000);
       });
     }
+
+    // --- الجزء المضاف لتفعيل الـ Offline ---
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        const swCode = `
+          self.addEventListener('install', e => e.waitUntil(caches.open('fh-v1').then(c => c.addAll(['./']))));
+          self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
+        `;
+        const blob = new Blob([swCode], {type: 'text/javascript'});
+        navigator.serviceWorker.register(URL.createObjectURL(blob));
+      });
+    }
   </script>
 </body>
 </html>
-
