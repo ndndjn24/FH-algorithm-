@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>FH Decoder Pro</title>
+  <title>FH DECODER</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
-      --primary: #00ff88;
-      --glass: rgba(255, 255, 255, 0.05);
+      --glass: rgba(255, 255, 255, 0.03);
       --border: rgba(255, 255, 255, 0.1);
+      --bg-dark: #050505;
     }
 
     body {
       margin: 0;
-      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #000;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-dark);
       color: white;
       display: flex;
       justify-content: center;
@@ -23,133 +23,118 @@
       overflow: hidden;
     }
 
-    /* تأثير السائل المتحرك في الخلفية */
+    /* خلفية ليكويد سوداء عميقة */
     .liquid-bg {
       position: absolute;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, #050505, #1a1a2e, #050505);
-      background-size: 400% 400%;
-      animation: gradient 15s ease infinite;
+      background: radial-gradient(circle at 50% 50%, #111 0%, #050505 100%);
       z-index: -1;
     }
 
-    @keyframes gradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    /* الحاوية الزجاجية المطورة */
     .container {
       background: var(--glass);
-      backdrop-filter: blur(25px) saturate(180%);
-      -webkit-backdrop-filter: blur(25px) saturate(180%);
+      backdrop-filter: blur(30px) saturate(150%);
+      -webkit-backdrop-filter: blur(30px) saturate(150%);
       border: 1px solid var(--border);
-      padding: 40px;
-      border-radius: 35px;
+      padding: 50px 30px;
+      border-radius: 40px;
       width: 90%;
       max-width: 380px;
       text-align: center;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-      animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+      animation: fadeIn 1s ease;
     }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     h2 {
-      font-weight: 300;
-      letter-spacing: 2px;
-      margin-bottom: 30px;
-      background: linear-gradient(to right, #fff, #888);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-weight: 200;
+      letter-spacing: 5px;
+      margin-bottom: 40px;
+      color: rgba(255,255,255,0.9);
+      font-size: 20px;
     }
 
     input {
       width: 100%;
-      padding: 18px;
-      background: rgba(255,255,255,0.03);
+      padding: 20px;
+      background: rgba(255,255,255,0.02);
       border: 1px solid var(--border);
-      border-radius: 18px;
+      border-radius: 20px;
       color: white;
       font-size: 16px;
       outline: none;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
       box-sizing: border-box;
       text-align: center;
     }
 
+    /* تأثير ليكويد غلاس عند الضغط (بدون أخضر) */
     input:focus {
-      background: rgba(255,255,255,0.07);
-      border-color: var(--primary);
-      box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.3);
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+      transform: translateY(-2px);
     }
 
-    /* أنيميشن زر Convert */
     .convert-btn {
-      margin-top: 25px;
+      margin-top: 30px;
       width: 100%;
-      padding: 16px;
+      padding: 18px;
       border-radius: 20px;
       border: none;
       background: white;
       color: black;
-      font-weight: 700;
-      font-size: 16px;
+      font-weight: 600;
+      font-size: 15px;
       cursor: pointer;
-      position: relative;
-      overflow: hidden;
       transition: all 0.3s ease;
     }
 
-    .convert-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(255,255,255,0.2);
-    }
-
     .convert-btn:active {
-      transform: scale(0.96);
+      transform: scale(0.97);
+      opacity: 0.8;
     }
 
+    /* نتيجة بيضاء نقية مع أنيميشن ناعم */
     #output {
-      margin-top: 35px;
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--primary);
-      min-height: 35px;
-      transition: all 0.4s ease;
+      margin-top: 40px;
+      font-size: 30px;
+      font-weight: 200;
+      color: #ffffff;
+      min-height: 40px;
+      letter-spacing: 1px;
     }
 
     .copy-btn {
-      margin-top: 15px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
-      color: #aaa;
-      padding: 8px 20px;
-      border-radius: 12px;
+      margin-top: 20px;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.3);
       cursor: pointer;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
       display: none;
-      font-size: 13px;
       transition: 0.3s;
     }
     
-    .copy-btn:hover { color: white; background: rgba(255,255,255,0.1); }
+    .copy-btn:hover { color: white; }
 
     .watermark {
       position: fixed;
-      bottom: 25px;
-      right: 25px;
-      font-size: 11px;
-      color: rgba(255,255,255,0.3);
+      bottom: 30px;
+      font-size: 10px;
+      color: rgba(255,255,255,0.2);
       text-decoration: none;
-      letter-spacing: 1px;
-      transition: 0.4s;
+      letter-spacing: 2px;
+      transition: 0.5s;
     }
-    .watermark:hover { color: var(--primary); opacity: 1; }
+    .watermark:hover { color: white; }
   </style>
 </head>
 <body>
@@ -157,9 +142,9 @@
   <div class="liquid-bg"></div>
 
   <div class="container">
-    <h2>DECODER PRO</h2>
-    <input id="input" type="text" placeholder="Enter text..." autocomplete="off">
-    <button class="convert-btn" onclick="run()">Convert</button>
+    <h2>FH DECODER</h2>
+    <input id="input" type="text" placeholder="ENTER CODE" autocomplete="off">
+    <button class="convert-btn" onclick="run()">CONVERT</button>
 
     <div id="output"></div>
     <button id="copyBtn" class="copy-btn" onclick="copyToClipboard()">Tap to copy</button>
@@ -174,7 +159,7 @@
       "5":"a","4":"b","3":"c","2":"d","1":"e","0":"f",
       "g":"z","h":"y","i":"x","j":"w","k":"v","l":"u",
       "m":"t","n":"s","o":"r","p":"q","q":"p","r":"o",
-      "s":"n","t":"m","u":"l","f":"0", // تصحيح حرف f إلى 0 بناءً على جدولك
+      "s":"n","t":"m","u":"l","f":"0",
       "z":"g","y":"h","x":"i","w":"j","v":"k",
       "e":"1","d":"2","c":"3","b":"4","a":"5",
       "9":"6","8":"7","7":"8","6":"9"
@@ -197,22 +182,19 @@
         output.textContent = result;
         output.style.opacity = "1";
         copyBtn.style.display = "inline-block";
-      }, 150);
+      }, 100);
     }
 
     function copyToClipboard() {
       const text = document.getElementById("output").textContent;
       const btn = document.getElementById("copyBtn");
-      
       if (navigator.vibrate) navigator.vibrate(40);
-
       navigator.clipboard.writeText(text).then(() => {
-        btn.textContent = "Copied! ✅";
-        setTimeout(() => { btn.textContent = "Tap to copy"; }, 2000);
+        btn.textContent = "COPIED";
+        setTimeout(() => { btn.textContent = "TAP TO COPY"; }, 2000);
       });
     }
 
-    // تفعيل الخدمة للعمل أوفلاين بالكامل
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         const sw = `self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));`;
