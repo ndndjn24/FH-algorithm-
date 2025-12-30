@@ -23,7 +23,6 @@
       overflow: hidden;
     }
 
-    /* خلفية ليكويد سوداء عميقة */
     .liquid-bg {
       position: absolute;
       width: 100%;
@@ -73,34 +72,46 @@
       text-align: center;
     }
 
-    /* تأثير ليكويد غلاس عند الضغط (بدون أخضر) */
     input:focus {
       background: rgba(255,255,255,0.08);
       border-color: rgba(255,255,255,0.3);
       box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
-      transform: translateY(-2px);
     }
 
-    .convert-btn {
-      margin-top: 30px;
+    /* تنسيق موحد للأزرار */
+    .action-btn {
       width: 100%;
       padding: 18px;
       border-radius: 20px;
       border: none;
-      background: white;
-      color: black;
       font-weight: 600;
-      font-size: 15px;
+      font-size: 14px;
       cursor: pointer;
       transition: all 0.3s ease;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
-    .convert-btn:active {
+    /* زر التحويل - أبيض */
+    .convert-btn {
+      margin-top: 30px;
+      background: white;
+      color: black;
+    }
+
+    /* زر النسخ - رمادي مطفي */
+    .copy-btn {
+      margin-top: 15px;
+      background: #252525;
+      color: #999;
+      display: none; /* يظهر فقط عند وجود نتيجة */
+    }
+
+    .action-btn:active {
       transform: scale(0.97);
       opacity: 0.8;
     }
 
-    /* نتيجة بيضاء نقية مع أنيميشن ناعم */
     #output {
       margin-top: 40px;
       font-size: 30px;
@@ -110,21 +121,6 @@
       letter-spacing: 1px;
     }
 
-    .copy-btn {
-      margin-top: 20px;
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.3);
-      cursor: pointer;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      display: none;
-      transition: 0.3s;
-    }
-    
-    .copy-btn:hover { color: white; }
-
     .watermark {
       position: fixed;
       bottom: 30px;
@@ -132,9 +128,7 @@
       color: rgba(255,255,255,0.2);
       text-decoration: none;
       letter-spacing: 2px;
-      transition: 0.5s;
     }
-    .watermark:hover { color: white; }
   </style>
 </head>
 <body>
@@ -144,10 +138,12 @@
   <div class="container">
     <h2>FH DECODER</h2>
     <input id="input" type="text" placeholder="ENTER CODE" autocomplete="off">
-    <button class="convert-btn" onclick="run()">CONVERT</button>
+    
+    <button class="action-btn convert-btn" onclick="run()">CONVERT</button>
 
     <div id="output"></div>
-    <button id="copyBtn" class="copy-btn" onclick="copyToClipboard()">Tap to copy</button>
+    
+    <button id="copyBtn" class="action-btn copy-btn" onclick="copyToClipboard()">TAP TO COPY</button>
   </div>
 
   <a href="https://www.instagram.com/alt.yxf" target="_blank" class="watermark">
@@ -181,7 +177,7 @@
       setTimeout(() => {
         output.textContent = result;
         output.style.opacity = "1";
-        copyBtn.style.display = "inline-block";
+        copyBtn.style.display = "block";
       }, 100);
     }
 
@@ -189,9 +185,14 @@
       const text = document.getElementById("output").textContent;
       const btn = document.getElementById("copyBtn");
       if (navigator.vibrate) navigator.vibrate(40);
+      
       navigator.clipboard.writeText(text).then(() => {
-        btn.textContent = "COPIED";
-        setTimeout(() => { btn.textContent = "TAP TO COPY"; }, 2000);
+        btn.textContent = "COPIED ✅";
+        btn.style.color = "white";
+        setTimeout(() => { 
+          btn.textContent = "TAP TO COPY"; 
+          btn.style.color = "#999";
+        }, 2000);
       });
     }
 
